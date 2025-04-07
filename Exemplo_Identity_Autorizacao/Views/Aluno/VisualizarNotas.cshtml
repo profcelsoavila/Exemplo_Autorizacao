@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Exemplo_Identity_Autorizacao.Models.Aluno>
+
+@{
+    ViewData["Title"] = "VisualizarNotas";
+}
+
+<h1>VisualizarNotas</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Professor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Professor.ProfessorID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AlunoID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AlunoID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AlunoID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
