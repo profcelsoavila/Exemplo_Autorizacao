@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
-[Authorize(Roles = "Aluno")] // Restringe o acesso a Alunos
+[Authorize(Roles = "Aluno, Professor")] // Restringe o acesso a Alunos e Professores
 public class AlunoController : Controller
 {
     private readonly Context _context;
@@ -15,12 +16,7 @@ public class AlunoController : Controller
     // Action para visualizar as notas de um aluno
     public IActionResult VisualizarNotas()
     {
-        var alunoId = User.Identity.Name; // Identifica o aluno logado
-        var aluno = _context.Alunos.FirstOrDefault(a => a.AlunoID == int.Parse(alunoId));
-        if (aluno == null)
-        {
-            return NotFound();
-        }
-        return View(aluno);
+        return View(_context.Alunos
+            .Include(p => p.Professor));
     }
 }

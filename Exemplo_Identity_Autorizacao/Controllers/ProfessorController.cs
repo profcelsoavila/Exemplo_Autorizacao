@@ -38,10 +38,11 @@ public class ProfessorController : Controller
     public IActionResult CadastrarAluno()
     {
         // Busca os professores cadastrados no banco de dados
-        var professores = _context.Professores.Select(p => new { p.ProfessorID, p.Nome }).ToList();
+
+        //var professores = _context.Professores.Select(p => new { p.ProfessorID, p.Nome }).ToList();
 
         // Cria uma lista SelectList para enviar à view
-        ViewBag.Professores = new SelectList(professores, "ProfessorID", "Nome");
+        ViewBag.Professores = new SelectList(_context.Professores.OrderBy(p=>p.Nome), "ProfessorID", "Nome");
 
         return View();
     }
@@ -49,20 +50,11 @@ public class ProfessorController : Controller
     // Action para processar o cadastro do aluno (POST)
     [HttpPost]
     public IActionResult CadastrarAluno(Aluno aluno)
-    {
-        if (ModelState.IsValid)
-        {
+    {       
             // Adiciona o aluno ao banco de dados
-            _context.Alunos.Add(aluno);
+            _context.Add(aluno);            
             _context.SaveChanges();
-            return RedirectToAction("ListaAlunos");
-        }
-
-        // Caso a validação falhe, enviar novamente a lista de professores
-        var professores = _context.Professores.Select(p => new { p.ProfessorID, p.Nome }).ToList();
-        ViewBag.Professores = new SelectList(professores, "ProfessorID", "Nome");
-
-        return View(aluno);
+            return RedirectToAction("VisualizarNotas", "Aluno");   
     }
 
     // Action para listar alunos do professor
